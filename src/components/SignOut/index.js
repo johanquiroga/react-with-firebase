@@ -1,10 +1,14 @@
-import React from "react";
+import React from 'react';
+
+import { useFirebase } from '../Firebase';
 
 const SignOut = () => {
+  const firebase = useFirebase();
+
   return (
-    <div>
-      <h1>SignOut</h1>
-    </div>
+    <button type="button" onClick={firebase.doSignOut}>
+      Sign Out
+    </button>
   );
 };
 
