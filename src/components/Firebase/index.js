@@ -1,11 +1,22 @@
-import React from "react";
+import React from 'react';
+import FirebaseContext from './context';
+import Firebase from './firebase';
 
-const Firebase = () => {
+const FirebaseProvider = ({ children }) => {
+  const firebase = new Firebase();
   return (
-    <div>
-      <h1>Firebase</h1>
-    </div>
+    <FirebaseContext.Provider value={firebase}>
+      {children}
+    </FirebaseContext.Provider>
   );
 };
 
-export default Firebase;
+function useFirebase() {
+  const context = React.useContext(FirebaseContext);
+  if (context === undefined) {
+    throw new Error('useFirebase must be used within a FirebaseProvider');
+  }
+  return context;
+}
+
+export { FirebaseProvider, useFirebase };
