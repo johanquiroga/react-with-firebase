@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import AuthContext from './context';
 
 import { useFirebase } from '../Firebase';
 
-import AuthContext from './context';
+import * as ROUTES from '../../constants/routes';
 
 function AuthProvider({ children }) {
   const firebase = useFirebase();
@@ -29,4 +32,21 @@ function useAuth() {
   return context;
 }
 
-export { AuthProvider, useAuth };
+const withAuthorization = condition => Component => {
+  function Wrapper(props) {
+    const history = useHistory();
+    const authUser = useAuth();
+
+    if (!condition(authUser)) {
+      history.push(ROUTES.SIGN_IN);
+      return null;
+    }
+
+    return <Component {...props} />;
+  }
+  Wrapper.displayName = `withAuthorization(${Component.displayName ||
+    Component.name})`;
+  return Wrapper;
+};
+
+export { AuthProvider, useAuth, withAuthorization };
