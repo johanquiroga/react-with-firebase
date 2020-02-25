@@ -12,7 +12,7 @@ import AdminPage from '../Admin';
 
 import * as ROUTES from '../../constants/routes';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <div>
@@ -28,6 +28,6 @@ const App = () => {
       </div>
     </Router>
   );
-};
+}
 
 export default App;

@@ -8,7 +8,7 @@ import { useFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { useState } from 'react';
 
-const SignInPage = () => {
+function SignInPage() {
   return (
     <div>
       <h1>SignIn</h1>
@@ -16,7 +16,7 @@ const SignInPage = () => {
       <SignUpLink />
     </div>
   );
-};
+}
 
 const INITIAL_STATE = {
   email: '',
@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-const SignInForm = () => {
+function SignInForm() {
   const firebase = useFirebase();
   const history = useHistory();
   const [{ email, password, error }, setFormState] = useState({
@@ -78,6 +78,7 @@ const SignInForm = () => {
       {error && <p>{error.message}</p>}
     </form>
   );
-};
+}
 
 export default SignInPage;
+export { SignInForm };

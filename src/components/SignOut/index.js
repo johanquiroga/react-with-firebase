@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useFirebase } from '../Firebase';
 
-const SignOut = () => {
+function SignOut() {
   const firebase = useFirebase();
 
   return (
@@ -10,6 +10,6 @@ const SignOut = () => {
       Sign Out
     </button>
   );
-};
+}
 
 export default SignOut;

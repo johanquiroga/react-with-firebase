@@ -5,14 +5,14 @@ import { useFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-const SignUpPage = () => {
+function SignUpPage() {
   return (
     <div>
       <h1>SignUp</h1>
       <SignUpForm />
     </div>
   );
-};
+}
 
 const INITIAL_STATE = {
   username: '',
@@ -22,7 +22,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
-const SignUpForm = () => {
+function SignUpForm() {
   const firebase = useFirebase();
   const history = useHistory();
 
@@ -98,13 +98,15 @@ const SignUpForm = () => {
       {error && <p>{error.message}</p>}
     </form>
   );
-};
+}
 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
-);
+function SignUpLink() {
+  return (
+    <p>
+      Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    </p>
+  );
+}
 
 export default SignUpPage;
 export { SignUpForm, SignUpLink };
