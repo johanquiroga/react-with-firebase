@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import { SignUpLink } from '../SignUp';
 
 import { useFirebase } from '../Firebase';
 
+import { SignUpLink } from '../SignUp';
+import { PasswordForgetLink } from '../PasswordForget';
+
 import * as ROUTES from '../../constants/routes';
-import { useState } from 'react';
 
 function SignInPage() {
   return (
     <div>
       <h1>SignIn</h1>
       <SignInForm />
+      <PasswordForgetLink />
       <SignUpLink />
     </div>
   );
