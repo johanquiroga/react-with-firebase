@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import AppProviders from './providers';
 import Navigation from '../Navigation';
 import Landing from '../Landing';
 import SignUpPage from '../SignUp';
@@ -31,3 +32,4 @@ function App() {
 }
 
 export default App;
+export { AppProviders };
