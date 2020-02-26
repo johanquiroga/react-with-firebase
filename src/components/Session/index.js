@@ -9,12 +9,20 @@ import * as ROUTES from '../../constants/routes';
 
 function AuthProvider({ children }) {
   const firebase = useFirebase();
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(
+    JSON.parse(localStorage.getItem('authUser')),
+  );
 
   useEffect(() => {
     const unsubscribe = firebase.onAuthUserListener(
-      user => setAuthUser(user),
-      () => setAuthUser(null),
+      user => {
+        localStorage.setItem('authUser', JSON.stringify(user));
+        setAuthUser(user);
+      },
+      () => {
+        localStorage.removeItem('authUser');
+        setAuthUser(null);
+      },
     );
 
     return () => {
