@@ -12,12 +12,15 @@ function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = firebase.auth.onAuthStateChanged(setAuthUser);
+    const unsubscribe = firebase.onAuthUserListener(
+      user => setAuthUser(user),
+      () => setAuthUser(null),
+    );
 
     return () => {
       unsubscribe();
     };
-  }, [firebase.auth]);
+  }, [firebase]);
 
   return (
     <AuthContext.Provider value={authUser}>{children}</AuthContext.Provider>
@@ -39,10 +42,9 @@ const withAuthorization = condition => Component => {
 
     if (!condition(authUser)) {
       history.push(ROUTES.SIGN_IN);
-      return null;
     }
 
-    return <Component {...props} />;
+    return condition(authUser) ? <Component {...props} /> : null;
   }
   Wrapper.displayName = `withAuthorization(${Component.displayName ||
     Component.name})`;

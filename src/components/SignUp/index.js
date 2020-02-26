@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 function SignUpPage() {
   return (
@@ -19,6 +20,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  isAdmin: false,
   error: null,
 };
 
@@ -27,7 +29,7 @@ function SignUpForm() {
   const history = useHistory();
 
   const [
-    { username, email, passwordOne, passwordTwo, error },
+    { username, email, passwordOne, passwordTwo, isAdmin, error },
     setFormState,
   ] = useState({
     ...INITIAL_STATE,
@@ -42,9 +44,19 @@ function SignUpForm() {
   const onSubmit = event => {
     event.preventDefault();
 
+    const roles = {};
+
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
+
     firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        // Create a user in your Firebase realtime database
+        return firebase.user(authUser.user.uid).set({ username, email, roles });
+      })
+      .then(() => {
         setFormState({ ...INITIAL_STATE });
         history.push(ROUTES.HOME);
       })
@@ -60,6 +72,15 @@ function SignUpForm() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const onChangeCheckbox = event => {
+    event.persist();
+    setFormState(formState => ({
+      ...formState,
+      [event.target.name]: event.target.checked,
+    }));
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <input
@@ -90,6 +111,15 @@ function SignUpForm() {
         type="password"
         placeholder="Confirm Password"
       />
+      <label>
+        Admin:
+        <input
+          name="isAdmin"
+          type="checkbox"
+          checked={isAdmin}
+          onChange={onChangeCheckbox}
+        />
+      </label>
 
       <button disabled={isInvalid} type="submit">
         Sign Up

@@ -6,6 +6,7 @@ import { useAuth } from '../Session';
 import SignOutButton from '../SignOut';
 
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 function Navigation() {
   const authUser = useAuth();
@@ -13,6 +14,7 @@ function Navigation() {
 }
 
 function NavigationAuth() {
+  const authUser = useAuth();
   return (
     <ul>
       <li>
@@ -24,6 +26,11 @@ function NavigationAuth() {
       <li>
         <Link to={ROUTES.ACCOUNT}>Account</Link>
       </li>
+      {!!authUser.roles[ROLES.ADMIN] && (
+        <li>
+          <Link to={ROUTES.ADMIN}>Admin</Link>
+        </li>
+      )}
       <li>
         <SignOutButton />
       </li>

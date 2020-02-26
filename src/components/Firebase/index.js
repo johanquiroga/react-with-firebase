@@ -2,9 +2,11 @@ import React from 'react';
 import FirebaseContext from './context';
 import Firebase from './firebase';
 
+const firebase = new Firebase();
+
 function FirebaseProvider({ children }) {
   return (
-    <FirebaseContext.Provider value={new Firebase()}>
+    <FirebaseContext.Provider value={firebase}>
       {children}
     </FirebaseContext.Provider>
   );
