@@ -13,6 +13,9 @@ function SignInPage() {
     <div>
       <h1>SignIn</h1>
       <SignInForm />
+      <SignInGoogle />
+      <SignInFacebook />
+      <SignInTwitter />
       <PasswordForgetLink />
       <SignUpLink />
     </div>
@@ -81,5 +84,107 @@ function SignInForm() {
   );
 }
 
+function SignInGoogle() {
+  const history = useHistory();
+  const firebase = useFirebase();
+  const [error, setError] = useState(null);
+
+  const onSubmit = event => {
+    event.preventDefault();
+
+    firebase
+      .doSignInWithGoogle()
+      .then(socialAuthUser => {
+        // Create a user in your Firebase Realtime Database too
+        return firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.user.displayName,
+          email: socialAuthUser.user.email,
+          roles: {},
+        });
+      })
+      .then(() => {
+        setError(null);
+        history.push(ROUTES.HOME);
+      })
+      .catch(setError);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <button type="submit">Sign In with Google</button>
+
+      {error && <p>{error.message}</p>}
+    </form>
+  );
+}
+
+function SignInFacebook() {
+  const history = useHistory();
+  const firebase = useFirebase();
+  const [error, setError] = useState(null);
+
+  const onSubmit = event => {
+    event.preventDefault();
+
+    firebase
+      .doSignInWithFacebook()
+      .then(socialAuthUser => {
+        // Create a user in your Firebase Realtime Database too
+        return firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.additionalUserInfo.profile.name,
+          email: socialAuthUser.additionalUserInfo.profile.email,
+          roles: {},
+        });
+      })
+      .then(() => {
+        setError(null);
+        history.push(ROUTES.HOME);
+      })
+      .catch(setError);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <button type="submit">Sign In with Facebook</button>
+
+      {error && <p>{error.message}</p>}
+    </form>
+  );
+}
+
+function SignInTwitter() {
+  const history = useHistory();
+  const firebase = useFirebase();
+  const [error, setError] = useState(null);
+
+  const onSubmit = event => {
+    event.preventDefault();
+
+    firebase
+      .doSignInWithTwitter()
+      .then(socialAuthUser => {
+        // Create a user in your Firebase Realtime Database too
+        return firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.additionalUserInfo.profile.name,
+          email: socialAuthUser.additionalUserInfo.profile.email,
+          roles: {},
+        });
+      })
+      .then(() => {
+        setError(null);
+        history.push(ROUTES.HOME);
+      })
+      .catch(setError);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <button type="submit">Sign In with Twitter</button>
+
+      {error && <p>{error.message}</p>}
+    </form>
+  );
+}
+
 export default SignInPage;
-export { SignInForm };
+export { SignInForm, SignInGoogle, SignInFacebook, SignInTwitter };
