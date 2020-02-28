@@ -8,6 +8,16 @@ import { PasswordForgetLink } from '../PasswordForget';
 
 import * as ROUTES from '../../constants/routes';
 
+const ERROR_CODE_ACCOUNT_EXISTS =
+  'auth/account-exists-with-different-credential';
+
+const ERROR_MSG_ACCOUNT_EXISTS = `
+  An account with an E-mail address to
+  this social account already exists. Try to login from
+  this account instead and associate your social accounts on
+  your personal account page.
+`;
+
 function SignInPage() {
   return (
     <div>
@@ -106,7 +116,12 @@ function SignInGoogle() {
         setError(null);
         history.push(ROUTES.HOME);
       })
-      .catch(setError);
+      .catch(error => {
+        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+          error.message = ERROR_MSG_ACCOUNT_EXISTS;
+        }
+        setError(error);
+      });
   };
 
   return (
@@ -140,7 +155,12 @@ function SignInFacebook() {
         setError(null);
         history.push(ROUTES.HOME);
       })
-      .catch(setError);
+      .catch(error => {
+        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+          error.message = ERROR_MSG_ACCOUNT_EXISTS;
+        }
+        setError(error);
+      });
   };
 
   return (
@@ -174,7 +194,12 @@ function SignInTwitter() {
         setError(null);
         history.push(ROUTES.HOME);
       })
-      .catch(setError);
+      .catch(error => {
+        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+          error.message = ERROR_MSG_ACCOUNT_EXISTS;
+        }
+        setError(error);
+      });
   };
 
   return (
